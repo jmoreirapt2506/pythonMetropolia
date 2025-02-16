@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import os
 
 def draw_lines():
     x = np.linspace(-10, 10, 400)
@@ -15,8 +15,13 @@ def draw_lines():
     plt.title("Graph of y = 2x + b")
     plt.legend()
     plt.grid(True)
-    plt.show()
 
+    img_path = "static/exercise1.png"
+    plt.savefig(img_path)
+    plt.close()
+
+    return img_path
 
 if __name__ == "__main__":
-    draw_lines()
+    img_path = draw_lines()
+    print(img_path)

@@ -7,7 +7,14 @@
 </head>
 <body>
     <h1>Resultado de {{ modulo }} - {{ ejercicio }}</h1>
-    <pre>{{ output }}</pre>
-    <a href="/"> Volver</a>
+
+    {% if output.startswith("static/") %}
+        <img src="{{ output }}" alt="Gráfica generada">
+    {% else %}
+        <pre>{{ output }}</pre>
+    {% endif %}
+
+    <br>
+    <a href="/">🔙 Volver</a>
 </body>
 </html>
