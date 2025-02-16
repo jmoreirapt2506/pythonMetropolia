@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Python</title>
+</head>
+<body>
+    <h1>Selecciona un Módulo y un Ejercicio</h1>
+
+    <form action="/run" method="post">
+        <label for="modulo">Módulo:</label>
+        <select name="modulo" id="modulo">
+            {% for modulo in ejercicios.keys() %}
+                <option value="{{ modulo }}">{{ modulo }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="ejercicio">Ejercicio:</label>
+        <select name="ejercicio" id="ejercicio">
+            {% for modulo, lista_ejercicios in ejercicios.items() %}
+                {% for ejercicio in lista_ejercicios %}
+                    <option value="{{ ejercicio }}" class="{{ modulo }}">{{ ejercicio }}</option>
+                {% endfor %}
+            {% endfor %}
+        </select>
+
+        <button type="submit">Ejecutar</button>
+    </form>
+</body>
+</html>
