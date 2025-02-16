@@ -8,13 +8,13 @@
 <body>
     <h1>Resultado de {{ modulo }} - {{ ejercicio }}</h1>
 
-    {% if output.startswith("static/") %}
+    {% if es_imagen %}
         <img src="{{ output }}" alt="Gráfica generada">
     {% else %}
         <pre>{{ output }}</pre>
     {% endif %}
 
     <br>
-    <a href="/">🔙 Volver</a>
+    <a href="/"> Volver</a>
 </body>
 </html>
