@@ -61,3 +61,7 @@ def run():
     else:
         logging.error(f"❌ Archivo no encontrado: {script_path}")
         return f"<h3>❌ Error: El archivo {script_path} no existe.</h3><a href='/'>Volver</a>"
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080, debug=True)
