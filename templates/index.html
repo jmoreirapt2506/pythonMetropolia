@@ -4,28 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicios de Python</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .module {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .exercise {
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+        }
+        button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Selecciona un Módulo y un Ejercicio</h1>
+    <h1>Ejercicios de Python</h1>
 
-    <form action="/run" method="post">
-        <label for="modulo">Módulo:</label>
-        <select name="modulo" id="modulo">
-            {% for modulo in ejercicios.keys() %}
-                <option value="{{ modulo }}">{{ modulo }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="ejercicio">Ejercicio:</label>
-        <select name="ejercicio" id="ejercicio">
-            {% for modulo, lista_ejercicios in ejercicios.items() %}
-                {% for ejercicio in lista_ejercicios %}
-                    <option value="{{ ejercicio }}" class="{{ modulo }}">{{ ejercicio }}</option>
-                {% endfor %}
-            {% endfor %}
-        </select>
-
-        <button type="submit">Ejecutar</button>
-    </form>
+    {% for modulo, ejercicios in ejercicios.items() %}
+        <div class="module">{{ modulo.replace("_", " ").title() }}</div>
+        {% for ejercicio in ejercicios %}
+            <div class="exercise">
+                <span>{{ ejercicio.replace("_", " ").title() }}</span>
+                <form action="/run" method="post" style="display:inline;">
+                    <input type="hidden" name="modulo" value="{{ modulo }}">
+                    <input type="hidden" name="ejercicio" value="{{ ejercicio }}">
+                    <button type="submit">Ejecutar</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% endfor %}
 </body>
 </html>

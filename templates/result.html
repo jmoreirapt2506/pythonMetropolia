@@ -4,17 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados del Ejercicio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <h1>Resultado de {{ modulo }} - {{ ejercicio }}</h1>
 
     {% if es_imagen %}
+        <h3>📊 Histograma Generado:</h3>
         <img src="{{ output }}" alt="Gráfica generada">
     {% else %}
+        <h3>📋 Estadísticas:</h3>
         <pre>{{ output }}</pre>
     {% endif %}
 
     <br>
-    <a href="/"> Volver</a>
+    <form action="/" method="get">
+        <button type="submit">🔙 Volver</button>
+    </form>
 </body>
 </html>
