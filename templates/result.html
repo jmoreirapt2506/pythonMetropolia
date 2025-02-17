@@ -10,6 +10,19 @@
             margin: 20px;
             padding: 20px;
         }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        img {
+            display: block;
+            margin-top: 20px;
+            max-width: 100%;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
         button {
             margin-top: 20px;
             padding: 10px 15px;
@@ -26,8 +39,8 @@
 <body>
     <h1>Resultado de {{ modulo }} - {{ ejercicio }}</h1>
 
-    {% if es_imagen %}
-        <h3>📊 Histograma Generado:</h3>
+    {% if output.startswith("static/") %}
+        <h3>📊 Imagen Generada:</h3>
         <img src="{{ output }}" alt="Gráfica generada">
     {% else %}
         <h3>📋 Estadísticas:</h3>
@@ -36,7 +49,7 @@
 
     <br>
     <form action="/" method="get">
-        <button type="submit">🔙 Volver</button>
+        <button type="submit">Volver</button>
     </form>
 </body>
 </html>
