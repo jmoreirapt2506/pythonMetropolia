@@ -11,12 +11,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 def obtener_ejercicios():
     ejercicios = {}
-    for folder in os.listdir():
+    for folder in sorted(
+            os.listdir()):  # 📌 Asegurar que los módulos están ordenados
         if os.path.isdir(folder) and folder.startswith("module"):
-            archivos = [
+            archivos = sorted([
                 f.replace(".py", "") for f in os.listdir(folder)
                 if f.startswith("exercise") and f.endswith(".py")
-            ]
+            ])  # 📌 Ordenar ejercicios
             ejercicios[folder] = archivos
     return ejercicios
 

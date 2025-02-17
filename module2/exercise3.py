@@ -17,7 +17,6 @@ def analyze_weight_height():
     df["Height_cm"] = df["Height"] * 2.54
     df["Weight_kg"] = df["Weight"] * 0.453592
 
-    # 📌 Convertir los valores correctamente antes de usar `.to_dict()`
     stats = {
         "Mean":
         df[["Height_cm",
@@ -35,7 +34,8 @@ def analyze_weight_height():
 
     print(stats)
 
-    img_dir = os.path.join(script_dir, "../static")
+    # 📌 Guardar la imagen en "static/" con una ruta accesible para Flask
+    img_dir = os.path.join(os.path.dirname(script_dir), "static")
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
 
@@ -47,7 +47,8 @@ def analyze_weight_height():
     plt.savefig(img_path)
     plt.close()
 
-    return img_path
+    # 📌 Devolver solo la parte accesible de la imagen (ruta relativa)
+    return "static/exercise3.png"
 
 
 if __name__ == "__main__":
