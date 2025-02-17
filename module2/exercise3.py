@@ -9,7 +9,6 @@ def analyze_weight_height():
     csv_path = os.path.join(script_dir, "weight-height.csv")
 
     if not os.path.exists(csv_path):
-        print(f"❌ Error: El archivo {csv_path} no existe en {os.getcwd()}")
         return f"ERROR: CSV file not found ({csv_path})"
 
     df = pd.read_csv(csv_path)
@@ -17,29 +16,27 @@ def analyze_weight_height():
     df["Height_cm"] = df["Height"] * 2.54
     df["Weight_kg"] = df["Weight"] * 0.453592
 
+    # 📌 Convertir cada estadística manualmente en un diccionario
     stats = {
-        "Mean":
-        df[["Height_cm",
-            "Weight_kg"]].mean().to_frame().T.to_dict(orient="records")[0],
-        "Median":
-        df[["Height_cm",
-            "Weight_kg"]].median().to_frame().T.to_dict(orient="records")[0],
-        "Std Dev":
-        df[["Height_cm",
-            "Weight_kg"]].std().to_frame().T.to_dict(orient="records")[0],
-        "Variance":
-        df[["Height_cm",
-            "Weight_kg"]].var().to_frame().T.to_dict(orient="records")[0]
+        "Mean": {
+            col: df[col].mean()
+            for col in ["Height_cm", "Weight_kg"]
+        },
+        "Median": {
+            col: df[col].median()
+            for col in ["Height_cm", "Weight_kg"]
+        },
+        "Std Dev": {
+            col: df[col].std()
+            for col in ["Height_cm", "Weight_kg"]
+        },
+        "Variance": {
+            col: df[col].var()
+            for col in ["Height_cm", "Weight_kg"]
+        }
     }
 
-    print(stats)
-
-    # 📌 Guardar la imagen en "static/" con una ruta accesible para Flask
-    img_dir = os.path.join(os.path.dirname(script_dir), "static")
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
-
-    img_path = os.path.join(img_dir, "exercise3.png")
+    img_path = "static/exercise3.png"
     plt.hist(df["Height_cm"], bins=20, color='blue', alpha=0.7)
     plt.xlabel("Height (cm)")
     plt.ylabel("Frequency")
@@ -47,10 +44,10 @@ def analyze_weight_height():
     plt.savefig(img_path)
     plt.close()
 
-    # 📌 Devolver solo la parte accesible de la imagen (ruta relativa)
-    return "static/exercise3.png"
+    return stats, img_path
 
 
 if __name__ == "__main__":
-    output = analyze_weight_height()
-    print(output)
+    output, img_path = analyze_weight_height()
+    print(output)  # 📌 Mostrar estadísticas en consola
+    print(img_path)  # 📌 Mostrar la ruta de la imagen en consola

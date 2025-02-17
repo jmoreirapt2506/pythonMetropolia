@@ -22,15 +22,7 @@ def obtener_ejercicios():
     return ejercicios
 
 
-@app.route('/')
-def home():
-    ejercicios = obtener_ejercicios()
-    return render_template("index.html", ejercicios=ejercicios)
-
-
-@app.route('/run',
-           methods=['POST'
-                    ])  # 📌 Este decorador debe estar después de definir `app`
+@app.route('/run', methods=['POST'])
 def run():
     modulo = request.form.get("modulo")
     ejercicio = request.form.get("ejercicio")
@@ -44,28 +36,28 @@ def run():
                                        capture_output=True,
                                        text=True,
                                        check=True)
-            output = resultado.stdout.strip()
+            output_lines = resultado.stdout.strip().split(
+                "\n")  # 📌 Dividir la salida en líneas
 
-            if output.startswith("static/") and os.path.exists(output):
+            if len(output_lines) == 2 and output_lines[1].startswith(
+                    "static/"):
+                # 📌 Si la salida tiene dos líneas y la segunda es una imagen, la mostramos
+                stats, img_path = output_lines[0], output_lines[1]
                 return render_template("result.html",
-                                       output=output,
+                                       output=stats,
+                                       img_path=img_path,
                                        modulo=modulo,
-                                       ejercicio=ejercicio,
-                                       es_imagen=True)
+                                       ejercicio=ejercicio)
             else:
                 return render_template("result.html",
-                                       output=output,
+                                       output=resultado.stdout,
+                                       img_path=None,
                                        modulo=modulo,
-                                       ejercicio=ejercicio,
-                                       es_imagen=False)
+                                       ejercicio=ejercicio)
+
         except subprocess.CalledProcessError as e:
             logging.error(f"❌ Error ejecutando {script_path}: {e.stderr}")
             return f"<h3>❌ Error ejecutando el script: {e.stderr}</h3><a href='/'>Volver</a>"
     else:
         logging.error(f"❌ Archivo no encontrado: {script_path}")
         return f"<h3>❌ Error: El archivo {script_path} no existe.</h3><a href='/'>Volver</a>"
-
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080,
-            debug=True)  # 📌 Asegura que esto está al final

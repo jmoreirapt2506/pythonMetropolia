@@ -39,17 +39,19 @@
 <body>
     <h1>Resultado de {{ modulo }} - {{ ejercicio }}</h1>
 
-    {% if output.startswith("static/") %}
+    {% if img_path %}
         <h3>📊 Imagen Generada:</h3>
-        <img src="{{ output }}" alt="Gráfica generada">
-    {% else %}
+        <img src="{{ img_path }}" alt="Gráfica generada">
+    {% endif %}
+
+    {% if output %}
         <h3>📋 Estadísticas:</h3>
         <pre>{{ output }}</pre>
     {% endif %}
 
     <br>
     <form action="/" method="get">
-        <button type="submit">Volver</button>
+        <button type="submit">🔙 Volver</button>
     </form>
 </body>
 </html>
