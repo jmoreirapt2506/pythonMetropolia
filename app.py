@@ -1,10 +1,35 @@
 import os
-import subprocess  # 📌 Asegura que subprocess esté importado
+import subprocess
 import logging
-from flask import Flask, render_template, request  # 📌 Importa render_template y request
+from flask import Flask, render_template, request  # 📌 Asegura que Flask está importado
+
+# 📌 Definir la app ANTES de usar @app.route()
+app = Flask(__name__)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
-@app.route('/run', methods=['POST'])
+def obtener_ejercicios():
+    ejercicios = {}
+    for folder in os.listdir():
+        if os.path.isdir(folder) and folder.startswith("module"):
+            archivos = [
+                f.replace(".py", "") for f in os.listdir(folder)
+                if f.startswith("exercise") and f.endswith(".py")
+            ]
+            ejercicios[folder] = archivos
+    return ejercicios
+
+
+@app.route('/')
+def home():
+    ejercicios = obtener_ejercicios()
+    return render_template("index.html", ejercicios=ejercicios)
+
+
+@app.route('/run',
+           methods=['POST'
+                    ])  # 📌 Este decorador debe estar después de definir `app`
 def run():
     modulo = request.form.get("modulo")
     ejercicio = request.form.get("ejercicio")
