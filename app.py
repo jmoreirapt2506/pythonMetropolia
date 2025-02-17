@@ -1,7 +1,7 @@
 import os
 import subprocess
 import logging
-from flask import Flask, render_template, request  # 📌 Asegura que Flask está importado
+from flask import Flask, render_template, request, url_for  # 📌 Asegura que Flask está importado
 
 # 📌 Definir la app ANTES de usar @app.route()
 app = Flask(__name__)
@@ -10,6 +10,9 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def obtener_ejercicios():
+    """
+    Busca todos los módulos y ejercicios en la estructura de carpetas y devuelve un diccionario ordenado.
+    """
     ejercicios = {}
     for folder in sorted(
             os.listdir()):  # 📌 Asegurar que los módulos están ordenados
@@ -22,8 +25,20 @@ def obtener_ejercicios():
     return ejercicios
 
 
+@app.route('/')
+def home():
+    """
+    Renderiza la página de inicio con la lista de módulos y ejercicios.
+    """
+    ejercicios = obtener_ejercicios()
+    return render_template("index.html", ejercicios=ejercicios)
+
+
 @app.route('/run', methods=['POST'])
 def run():
+    """
+    Ejecuta un ejercicio seleccionado y muestra el resultado (texto o imagen).
+    """
     modulo = request.form.get("modulo")
     ejercicio = request.form.get("ejercicio")
 
